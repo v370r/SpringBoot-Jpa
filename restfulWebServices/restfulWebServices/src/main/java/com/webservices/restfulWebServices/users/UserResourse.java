@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +47,7 @@ public class UserResourse {
 	@GetMapping("/sortedUsers")
 	public List<User> SortedUsers() {
 //		return service.Ordered();
-		return repository.findAllByOrderByIdAsc();
+		return repository.findAllByOrderByIdDesc();
 	}
 	
 	@PostMapping("/users")
@@ -59,9 +60,10 @@ public class UserResourse {
 		return ResponseEntity.created(location).build();
 		*/
 		User savedUser = repository.save(user);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedUser.getId())
-				.toUri();
-		return ResponseEntity.created(location).build();
+//		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedUser.getId())
+//				.toUri();
+//		return ResponseEntity.created(location).build();
+		return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
 	}
 	
     @DeleteMapping("/users/{id}")
